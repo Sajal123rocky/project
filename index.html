@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Superdense Coding</title>
+  </head>
+  <body>
+    <h1>Implementation of Superdense Coding</h1>
+<p>//Given H=1/√2{{1,1},{1,-1}} , X={{0,1},{1,0}} , Z={{1,0},{0,-1}} and CNOT={{1,0,0,0},{0,1,0,0},{0,0,0,1},{0,0,1,0}}</p>
+
+<pre>
+ZGate(B)
+{
+    // Z gate to Alice’s qubit in bell state
+    return B*Z ;
+}
+
+XGate(B)
+{
+    //Flips the Alices qubit by applying quantum NOT gate to Bell State
+    return B*X ;
+}
+
+CNOTGate(B)
+{
+    //Flips the second qubit (the target qubit) if and only if the first qubit (the control qubit) is |1>
+    return B*CNOT;
+}
+Hadamard(B)
+{
+    //Transforms (|0>+|1>)/√2 to |0> and (|0>-|1>)/√2 to |1>
+    //Hadamard gate to print qubit to create superposition
+    return B*H;
+}
+
+BellState_Generation()
+{
+    Basis={0,0};
+    SuperPosition=Hadamard(Basis);
+    BellState=CNOTGate(SuperPosition);
+    return BellState;
+}
+
+Encode(BellState b0 , b1)
+{
+    if ( b0==0 && b1==0)
+    return BellState;
+    if (b0==0 && b1==1)
+    return XGate(BellState);
+    if( b0==1 && b1==0)
+    return ZGate(BellState);
+    if( b0==1 && b1==1)
+    return ZGate(XGate (BellState));
+}
+
+Decode(BellState)
+{
+    BellState = CNOTGate(BellState);
+    BellState = Hadamard(BellState);
+    return BellState;
+}
+
+
+B=BellState Generation();
+Y=Encode(B,0,0);
+Z=Decode(Y);
+
+</pre>
+// Z is the information decoded by Bob containing of two classical bits sent by Alice.
+</body>
+</html>
